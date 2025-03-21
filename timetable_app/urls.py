@@ -8,4 +8,5 @@ urlpatterns = [
     path('timetable/', views.timetable_list, name='timetable_list'),
     path('generate_timetable/', views.generate_timetable, name='generate_timetable'),
     path('semester/<int:semester_id>/courses/', views.manage_semester_courses, name='manage_semester_courses'),
+    path('rooms/', views.view_rooms, name='rooms'),
 ]

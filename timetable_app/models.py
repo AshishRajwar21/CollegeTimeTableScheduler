@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import uuid # Import uuid
 
 class College(models.Model):
     college_code = models.CharField(max_length=10, unique=True)
@@ -55,18 +56,28 @@ class Faculty(models.Model):
         return self.user.username
 
 class Semester(models.Model):
+    SEMESTER_CHOICES = (
+        (1, '1st'),
+        (2, '2nd'),
+        (3, '3rd'),
+        (4, '4th'),
+        (5, '5th'),
+        (6, '6th'),
+        (7, '7th'),
+        (8, '8th'),
+    )
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    semester_number = models.IntegerField()
+    semester_number = models.IntegerField(choices=SEMESTER_CHOICES) # Changed to choices
     courses = models.ManyToManyField(Course)
 
     def __str__(self):
-        return f"{self.department.name} - Semester {self.semester_number}"
+        return f"{self.department.name} - Semester {self.get_semester_number_display()}" #display value
 
 class Timetable(models.Model):
     day = models.CharField(max_length=10)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE) # Changed on_delete
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
